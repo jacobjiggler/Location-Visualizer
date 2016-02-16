@@ -51,10 +51,12 @@ def atOffice(latitude, longitude):
 
 pt1 = Point(school_lat_min, school_long_min, 1234567, 0)
 pt2 = Point(school_lat_max, school_long_max, 1234599, 0)
+pt3 = Point(school_lat_min, school_long_max, 1234568, 0)
+pt4 = Point(school_lat_max, school_long_min, 1234569, 0)
 
 print (lerp(pt1, pt2, 1234588))
 
-print (intersection)
+print (intersects(pt1, pt2, pt3, pt4))
 
 def analyzeLocationData(csv):
     schoolCount = 0
