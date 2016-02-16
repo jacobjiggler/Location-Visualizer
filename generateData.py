@@ -58,11 +58,12 @@ print (lerp(pt1, pt2, 1234588))
 
 print (intersects(pt1, pt2, pt3, pt4))
 
-def analyzeLocationData(csv):
+def analyzeLocationData(csvData):
     schoolCount = 0
     crowsCount = 0
     officeCount = 0
-    wrap = CsvWrapper(csv)
+    otherCount = 0
+    wrap = CsvWrapper(csvData)
     point = wrap.getPoint()
     if (point == None):
         return
@@ -76,10 +77,17 @@ def analyzeLocationData(csv):
             crowsCount+=1
         elif (atOffice(lat, lon)):
             officeCount+=1
+        else:
+            otherCount+=1
         point = wrap.getPoint()
-    print(schoolCount)
-    print(crowsCount)
-    print(officeCount)
+    print("school count: " + str(schoolCount))
+    print("crows count: " + str(crowsCount))
+    print("office count: " + str(officeCount))
+    print("other location count: " + str(otherCount))
+    with open('locationCounts.csv', 'w', newline='') as csvfile:
+        writer = csv.writer(csvfile, delimiter=',')
+        writer.writerow(["school count", "crows count", "office count", "other count"])
+        writer.writerow([schoolCount] + [crowsCount] + [officeCount] + [otherCount])
 
 
 def analyzeMeetups(csv1,csv2):
