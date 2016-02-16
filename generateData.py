@@ -20,8 +20,8 @@ def atSchool(latitude, longitude):
 
 #print(atSchool(42.729320, -73.680688))
 
-pt1 = Point(school_lat_min, school_long_min, 1234567, 0)
-pt2 = Point(school_lat_max, school_long_max, 1234599, 0)
+pt1 = utils.Point(school_lat_min, school_long_min, 1234567, 0)
+pt2 = utils.Point(school_lat_max, school_long_max, 1234599, 0)
 
 print (utils.lerp(pt1, pt2, 1234588))
 

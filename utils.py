@@ -3,7 +3,7 @@ class Point:
         self.lat = lat
         self.lon = lon
         self.time = time
-        self.acc = accuracy
+        self.acc = acc
 
 
 def lerp(a, b, time):
