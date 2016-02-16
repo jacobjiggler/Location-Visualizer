@@ -11,7 +11,7 @@ print("Parsing...")
 
 out_data = []
 for x in in_data["locations"]:
-	out_row = [x["latitudeE7"], x["longitudeE7"], x["timestampMs"], x["accuracy"]]
+	out_row = [x["latitudeE7"] / 10000000, x["longitudeE7"] / 10000000, x["timestampMs"], x["accuracy"]]
 	out_data.append(out_row)
 
 print("Outputting to CSV...")
