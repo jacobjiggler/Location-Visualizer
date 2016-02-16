@@ -15,6 +15,11 @@ crows_lat_max = 42.724788
 crows_long_min = -73.672665
 crows_long_max = -73.672150
 
+office_lat_min = 42.720513
+office_lat_max = 42.721600
+office_long_min = -73.693628
+office_long_max = -73.693307
+
 def atSchool(latitude, longitude):
     if (latitude > school_lat_min and latitude < school_lat_max):
         if (longitude > school_long_min and longitude < school_long_max):
@@ -27,12 +32,22 @@ def atCrows(latitude, longitude):
             return True
     return False
 
+def atOffice(latitude, longitude):
+    if (latitude > office_lat_min and latitude < office_lat_max):
+        if (longitude > office_long_min and longitude < office_long_max):
+            return True
+    return False
+
 #should return true
 #print(atSchool(42.729320, -73.680688))
 #also true
 #print(atCrows(42.724140, -73.673135))
 #should return false
 #print(atCrows(42.724558, -73.672563))
+#should return true
+#print(atOffice(42.721083, -73.693382))
+
+
 
 
 pt1 = Point(school_lat_min, school_long_min, 1234567, 0)
