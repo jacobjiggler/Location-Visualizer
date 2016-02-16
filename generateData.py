@@ -20,7 +20,6 @@ def atSchool(latitude, longitude):
 
 #print(atSchool(42.729320, -73.680688))
 
-Point = namedtuple('Point', 'lat lon time acc')
 pt1 = Point(school_lat_min, school_long_min, 1234567, 0)
 pt2 = Point(school_lat_max, school_long_max, 1234599, 0)
 

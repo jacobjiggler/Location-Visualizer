@@ -1,3 +1,11 @@
+class Point:
+    def __init__(self, lat, lon, time, acc):
+        self.lat = lat
+        self.lon = lon
+        self.time = time
+        self.acc = accuracy
+
+
 def lerp(a, b, time):
 	"""
 	Takes two (lat, lon, time) tuples a and b, and a tmestamp between a and b
@@ -6,7 +14,7 @@ def lerp(a, b, time):
 	dlat = b.lat - a.lat
 	dlon = b.lon - a.lon
 	dt = (time - a.time) / (b.time - a.time)
-	
-	
-	
+
+
+
 	return (a.lat + dt * dlat, a.lon + dt * dlon, time)
