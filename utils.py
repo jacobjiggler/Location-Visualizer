@@ -21,11 +21,12 @@ class CsvWrapper:
 				if (len(row) != 4):
 					print("error")
 				else:
-					points.append(Point(row[0],row[1],row[2],row[3]))
+					self.points.append(Point(row[0],row[1],row[2],row[3]))
+			self.getPoint()
 
-	def getPoint():
-		itr+=1
-		return points[itr-1]
+	def getPoint(self):
+		self.itr+=1
+		return self.points[self.itr-1]
 
 
 

@@ -59,6 +59,9 @@ print (lerp(pt1, pt2, 1234588))
 print (intersects(pt1, pt2, pt3, pt4))
 
 def analyzeLocationData(csv):
+    wrap = CsvWrapper(csv)
+    point = wrap.getPoint()
+    print(point.lat)
     schoolCount = 0
     crowsCount = 0
     officeCount = 0
