@@ -25,6 +25,8 @@ class CsvWrapper:
 			self.getPoint()
 
 	def getPoint(self):
+		if (self.itr > len(self.points) - 1):
+			return None
 		self.itr+=1
 		return self.points[self.itr-1]
 

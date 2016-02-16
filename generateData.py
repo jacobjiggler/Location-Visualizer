@@ -59,12 +59,28 @@ print (lerp(pt1, pt2, 1234588))
 print (intersects(pt1, pt2, pt3, pt4))
 
 def analyzeLocationData(csv):
-    wrap = CsvWrapper(csv)
-    point = wrap.getPoint()
-    print(point.lat)
     schoolCount = 0
     crowsCount = 0
     officeCount = 0
+    wrap = CsvWrapper(csv)
+    point = wrap.getPoint()
+    if (point == None):
+        return
+    while(point != None):
+        #print(point.lat)
+        lat = float(point.lat)
+        lon = float(point.lon)
+        if (atSchool(lat, lon)):
+            schoolCount+=1
+        elif (atCrows(lat, lon)):
+            crowsCount+=1
+        elif (atOffice(lat, lon)):
+            officeCount+=1
+        point = wrap.getPoint()
+    print(schoolCount)
+    print(crowsCount)
+    print(officeCount)
+
 
 def analyzeMeetups(csv1,csv2):
     meetingPoints = []
