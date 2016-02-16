@@ -3,7 +3,6 @@ import csv
 import sys
 
 from utils import *
-from collections import namedtuple
 
 school_lat_min = 42.728205
 school_lat_max = 42.732396
@@ -54,6 +53,8 @@ pt1 = Point(school_lat_min, school_long_min, 1234567, 0)
 pt2 = Point(school_lat_max, school_long_max, 1234599, 0)
 
 print (lerp(pt1, pt2, 1234588))
+
+print (intersection)
 
 def analyzeLocationData(csv):
     schoolCount = 0
