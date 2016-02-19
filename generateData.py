@@ -14,20 +14,42 @@ crows_lat_max = 42.724788
 crows_long_min = -73.672665
 crows_long_max = -73.672150
 
-office_lat_min = 42.720513
-office_lat_max = 42.721600
-office_long_min = -73.693628
-office_long_max = -73.693307
+robhome_lat_min = 42.732189
+robhome_lat_max = 42.732829
+robhome_long_min = -73.688261
+robhome_long_max = -73.687419
+
+chiphi_lat_min = 42.730768
+chiphi_lat_max = 42.731476
+chiphi_long_min = -73.677751
+chiphi_long_max = -73.677082
+
+office_lat_min = 42.732104
+office_lat_max = 42.732778
+office_long_min = -73.691276
+office_long_max = -73.689881
 
 def atSchool(latitude, longitude):
     if (latitude > school_lat_min and latitude < school_lat_max):
         if (longitude > school_long_min and longitude < school_long_max):
             return True
     return False
-
+    
 def atCrows(latitude, longitude):
     if (latitude > crows_lat_min and latitude < crows_lat_max):
         if (longitude > crows_long_min and longitude < crows_long_max):
+            return True
+    return False
+
+def atRobHome(latitude, longitude):
+    if (latitude > robhome_lat_min and latitude < robhome_lat_max):
+        if (longitude > robhome_long_min and longitude < robhome_long_max):
+            return True
+    return False
+    
+def atChiPhi(latitude, longitude):
+    if (latitude > chiphi_lat_min and latitude < chiphi_lat_max):
+        if (longitude > chiphi_long_min and longitude < chiphi_long_max):
             return True
     return False
 
@@ -44,24 +66,15 @@ def atOffice(latitude, longitude):
 #should return false
 #print(atCrows(42.724558, -73.672563))
 #should return true
-#print(atOffice(42.721083, -73.693382))
-
-
-
-
-pt1 = Point(school_lat_min, school_long_min, 1234567, 0)
-pt2 = Point(school_lat_max, school_long_max, 1234599, 0)
-pt3 = Point(school_lat_min, school_long_max, 1234568, 0)
-pt4 = Point(school_lat_max, school_long_min, 1234569, 0)
-
-print (lerp(pt1, pt2, 1234588))
-
-print (intersects(pt1, pt2, pt3, pt4))
+#print(atOffice(42.73250, -73.690))
 
 def analyzeLocationData(csvData):
+    otherCount = 0
     schoolCount = 0
     crowsCount = 0
     officeCount = 0
+    chiphiCount = 0
+    robhomeCount = 0
     otherCount = 0
     wrap = CsvWrapper(csvData)
     point = wrap.getPoint()
@@ -71,28 +84,84 @@ def analyzeLocationData(csvData):
         #print(point.lat)
         lat = float(point.lat)
         lon = float(point.lon)
-        if (atSchool(lat, lon)):
+        #chiphi before school because it's contained in the school bounds
+        if (atChiPhi(lat, lon)):
+            chiphiCount+=1
+        elif (atSchool(lat, lon)):
             schoolCount+=1
         elif (atCrows(lat, lon)):
             crowsCount+=1
         elif (atOffice(lat, lon)):
             officeCount+=1
+        elif (atRobHome(lat, lon)):
+            robhomeCount+=1
         else:
             otherCount+=1
         point = wrap.getPoint()
     print("school count: " + str(schoolCount))
     print("crows count: " + str(crowsCount))
     print("office count: " + str(officeCount))
+    print("Chi Phi count: " + str(chiphiCount))
+    print("Rob Home count:" + str(robhomeCount))
     print("other location count: " + str(otherCount))
     with open('locationCounts.csv', 'w', newline='') as csvfile:
         writer = csv.writer(csvfile, delimiter=',')
-        writer.writerow(["school count", "crows count", "office count", "other count"])
-        writer.writerow([schoolCount] + [crowsCount] + [officeCount] + [otherCount])
+        writer.writerow(["school count", "crows count", "office count", "chi phi count", "rob home count", "other count"])
+        writer.writerow([schoolCount] + [crowsCount] + [officeCount] + [chiphiCount] + [robhomeCount] + [otherCount])
 
 
 def analyzeMeetups(csv1,csv2):
-    meetingPoints = []
+    dists = []
+    crosses = []
+    a = CsvWrapper(csv1)
+    b = CsvWrapper(csv2)
+    
+    #reverse order so they are in chronological order.
+    a.flip()
+    b.flip()
+    
+    prevAp = a.getPoint()
+    prevBp = b.getPoint()
+    ap = a.getPoint()
+    bp = b.getPoint()
+    
+    #Make sure starting times are similar
+    if prevAp.time < prevBp.time:
+        while ap.time < prevBp.time:
+            prevAp = ap
+            ap = a.getPoint()
+    elif prevBp.time < prevAp.time:
+        while bp.time < prevAp.time:
+            prevBp = bp
+            bp = b.getPoint()
+    
+    if ap is None or bp is None:
+        print("wat")
+        return
+    
+    while True:
+    
+        #lerp to get position at the same time
+        #bpl = lerp(prevBp, bp, ap.time)
+        dists.append((ap.time, distance(ap, bp)))
+        
+        intersection = intersects(prevAp, ap, prevBp, bp)
+        if intersection != False:
+            crosses.append(intersection)
+    
+        prevAp = ap
+        prevBp = bp
+        ap = a.getPoint()
+        bp = b.getPoint()
+        
+        if ap is None or bp is None:
+            break
 
+    with open('dists.csv', 'w', newline='') as csvfile:
+        writer = csv.writer(csvfile, delimiter=',')
+        writer.writerow(["time", "distance"])
+        for d in dists:
+            writer.writerow([d[0], d[1]])
 
 if __name__ == '__main__':
     #creates file named temp.dot
